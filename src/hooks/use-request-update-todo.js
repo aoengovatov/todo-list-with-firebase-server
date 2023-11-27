@@ -1,19 +1,10 @@
-export const useRequestUpdateTodo = (
-  id,
-  name,
-  setRefreshTodos,
-  refreshTodos
-) => {
-  fetch(`http://localhost:3005/todos/${id}`, {
-    method: "PUT",
-    headers: { "Content-Type": "application/json;charset=utf-8" },
-    body: JSON.stringify({
-      name: `${name.trim()}`,
-    }),
-  })
-    .then((rawResponse) => rawResponse.json())
-    .then((response) => {
-      console.log("Задача обновлена, ответ сервера:", response);
-      setRefreshTodos(!refreshTodos);
-    });
+import { ref, set } from "firebase/database";
+import { db } from "../firebase";
+
+export const useRequestUpdateTodo = (id, name) => {
+  const todoDbRef = ref(db, `todos/${id}`);
+
+  set(todoDbRef, { name: `${name.trim()}` }).then((response) => {
+    console.log("Задача обновлена, ответ сервера:", response);
+  });
 };
