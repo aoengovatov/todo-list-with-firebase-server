@@ -16,28 +16,28 @@ export const TodoListApp = () => {
   const [todosSearch, setTodosSearch] = useState([]);
   const [refreshTodos, setRefreshTodos] = useState(false);
   const [isSortTodos, setIsSortTodos] = useState(false);
-  const {isLoading, todos} = useRequestGetTodos(isSortTodos);
+  const {isLoading, todos, todosSorted} = useRequestGetTodos();
 
   const addTodo = (value) => {
     if (value !== undefined && value.trim() !== '') {
-      useRequestAddTodo(value, setRefreshTodos, refreshTodos);
+      useRequestAddTodo(value);
     }
   }
 
   const deleteTodo = (id) => {
-    useRequestDeleteTodo(id, setRefreshTodos, refreshTodos);
+    useRequestDeleteTodo(id);
   }
   
   const updateTodo = (id, name) => {
     if (name !== undefined && name.trim() !== '') {
-      useRequestUpdateTodo(id, name, setRefreshTodos, refreshTodos);
+      useRequestUpdateTodo(id, name);
     }
   }
 
   const setSortTodos = (value) => {
     setIsSortTodos(value);
     setRefreshTodos(!refreshTodos);
-  }
+  } 
 
   const setSearchValue = (value) => {
     let searchTodos = [];
@@ -48,9 +48,9 @@ export const TodoListApp = () => {
           ? searchTodos.push([id, {name}]) 
           : false
       );
-      }
-      setTodosSearch(searchTodos);
     }
+    setTodosSearch(searchTodos);
+  }
 
   return (
     <div className={styles.container}>
@@ -72,15 +72,28 @@ export const TodoListApp = () => {
             id={id}>{name}
           </CaseComponent>
         )) : (
-          Object.entries(todos).map(([id, { name }]) => 
+          isSortTodos ? 
           (
-            <CaseComponent 
-              key={id} 
-              deleteTodo={deleteTodo} 
-              updateTodo={updateTodo} 
-              id={id}>{name}
-            </CaseComponent>
-          )            
+            Object.entries(todosSorted).map(([id, { name }]) => 
+            (
+              <CaseComponent 
+                key={id} 
+                deleteTodo={deleteTodo} 
+                updateTodo={updateTodo} 
+                id={id}>{name}
+              </CaseComponent>
+            )  
+          )) : (
+            Object.entries(todos).map(([id, { name }]) => 
+            (
+              <CaseComponent 
+                key={id} 
+                deleteTodo={deleteTodo} 
+                updateTodo={updateTodo} 
+                id={id}>{name}
+              </CaseComponent>
+            )  
+          )        
         ))
       )}
       
