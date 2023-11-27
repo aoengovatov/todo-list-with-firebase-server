@@ -3,15 +3,13 @@ import { ref, onValue } from "firebase/database";
 import { db } from "../firebase";
 
 export const useRequestGetTodos = (isSortTodos) => {
-  const [todos, setTodos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [todos, setTodos] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
   const todosDbRef = ref(db, "todos");
 
   useEffect(() => {
-    setIsLoading(true);
-
     onValue(todosDbRef, (snapshot) => {
-      const loadedTodos = snapshot.val() || [];
+      const loadedTodos = snapshot.val() || {};
       console.log(loadedTodos);
       /*if (isSortTodos) {
         setTodos(
