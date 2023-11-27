@@ -1,0 +1,23 @@
+.editButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #c8c8c8;
+  border-radius: 100%;
+  padding: 5px;
+  margin-left: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editButton:hover {
+  background: rgb(252 212 141);
+}
+
+.editIcon {
+  width: 15px;
+  height: 15px;
+  background-image: url(/src/assets/edit.png);
+  background-size: cover;
+  opacity: 0.5;
+}
